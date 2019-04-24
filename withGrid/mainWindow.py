@@ -19,7 +19,6 @@ class MyWindow(pyglet.window.Window):
         self.key_handler = key.KeyStateHandler()
         self.testTrack= Track([40,60,1200,600],[240,260,800,200])
         self.testGrid = Grid(40,60,1200,600,50)
-
     def on_draw(self):
         glClear(GL_COLOR_BUFFER_BIT)
         self.fps_display.draw()
@@ -29,27 +28,30 @@ class MyWindow(pyglet.window.Window):
 
     def on_key_press(self, symbol,modifiers):
         if symbol == key.UP:
-            #print('accelerate')
             print(self.car.goStraight())
-            self.car.checkPoint()
         elif symbol == key.DOWN:
-            #print('reverse')
             print(self.car.goReverse())
-            self.car.checkPoint()
         elif symbol == key.LEFT:
-            #print('turn left')
             print(self.car.turnLeft())
-            self.car.checkPoint()
         elif symbol == key.RIGHT:
-            #print('turn right')
             print(self.car.turnRight())
-            self.car.checkPoint()
         elif symbol == key.ESCAPE:
             pyglet.app.exit()
+    
+    #reset car env
+    def resetCar(self):
+        self.car = CarSprite()
 
+    #check for points
+    #check for complete
+    #done when checkpoint is TRUE
+    #then reset
     def update(self, dt):
-        pass
-
+        self.car.checkPoint()
+        if (self.car.checkDone()):
+            print("DONE")
+            self.resetCar()
+            
 if __name__ == "__main__":
     window = MyWindow(WINDOWWIDTH,WINDOWHEIGHT, "DRIFT AI", resizable=True, vsync =True)
     window.push_handlers(window.key_handler)

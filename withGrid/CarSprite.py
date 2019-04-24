@@ -22,8 +22,8 @@ class CarSprite():
         self.height = self.carSprite.height
         self.touchAlreadyP1=[False,False,False,False,False]
         self.touchAlreadyP2=[False,False,False,False,False]
-        self.touchAlreadyP3=[False,False,False]
-        self.touchAlreadyP4=[False,False,False]
+        self.touchAlreadyP3=[False,False]
+        self.touchAlreadyP4=[False,False]
     def draw(self):
         self.carSprite.draw()
         Line(self.getX()-25,self.getY()-25,self.getX()+25,self.getY()-25,[0,0,0],1).draw()
@@ -32,41 +32,25 @@ class CarSprite():
         Line(self.getX()-25,self.getY()-25,self.getX()-25,self.getY()+25,[0,0,0],1).draw()
         Line(self.getX()+25,self.getY()-25,self.getX()+25,self.getY()+25,[0,0,0],1).draw()
         
-        #checkpointP11
-        Line(240,60,240,260,[0,0,0],1).draw()
-        #checkpointP12
-        Line(290,60,290,260,[0,0,0],1).draw()
-        #checkpointP13
-        Line(490,60,490,260,[0,0,0],1).draw()
-        #checkpointP14
-        Line(690,60,690,260,[0,0,0],1).draw()
-        #checkpointP15
-        Line(890,60,890,260,[0,0,0],1).draw()
+        #checkpointP1
+        for x in range(0,4):
+            Line(265 + x *200,60,265 +x *200,260,[0,0,0],1).draw()
+        Line(965,60,965,260,[0,0,0],1).draw()
+        
+        #checkpointP2
+        for x in range(0,4):
+            Line(265 + x *200,460,265 +x *200,660,[0,0,0],1).draw()
+        Line(965,460,965,660,[0,0,0],1).draw()
 
-        #checkpointP21
-        Line(240,460,240,660,[0,0,0],1).draw()
-        #checkpointP22
-        Line(290,460,290,660,[0,0,0],1).draw()
-        #checkpointP23
-        Line(490,460,490,660,[0,0,0],1).draw()
-        #checkpointP24
-        Line(690,460,690,660,[0,0,0],1).draw()
-        #checkpointP25
-        Line(890,460,890,660,[0,0,0],1).draw()
-
-        #checkpointP31
-        Line(1040,260,1240,260,[0,0,0],1).draw()
+        #checkpointP3
+        Line(1040,285,1240,285,[0,0,0],1).draw()
         #checkpointP32
-        Line(1040,360,1240,360,[0,0,0],1).draw()
-        #checkpointP33
-        Line(1040,460,1240,460,[0,0,0],1).draw()
+        Line(1040,385,1240,385,[0,0,0],1).draw()
 
-        #checkpointP41
-        Line(40,260,240,260,[0,0,0],1).draw()
+        #checkpointP4
+        Line(40,285,240,285,[0,0,0],1).draw()
         #checkpointP42
-        Line(40,360,240,360,[0,0,0],1).draw()
-        #checkpointP43
-        Line(40,460,240,460,[0,0,0],1).draw()
+        Line(40,385,240,385,[0,0,0],1).draw()
 
 
     
@@ -165,40 +149,59 @@ class CarSprite():
                 return 60
     
     def checkPoint(self):
-        value = self.getX() - self.speed
-        thetaRadian = -math.radians(self.getTheta())
-        deltaX = int(math.cos(thetaRadian) * self.speed) 
-        deltaY = int(math.sin(thetaRadian) * self.speed)
+        #check P1
+        for x in range(0,4):
+            if (self.getX()==(265 + x*200)) and (self.getY()<260) and not(self.touchAlreadyP1[x]):
+                print("touching "+str(self.getX())+" "+ str(self.getY()))
+                self.touchAlreadyP1[x] = True
+                return [self.getX(),self.getY()]
+        if (self.getX()==(965)) and (self.getY()<260) and not(self.touchAlreadyP1[4]):
+                print("touching "+str(self.getX())+" "+ str(self.getY()))
+                self.touchAlreadyP1[4] = True
+                return [self.getX(),self.getY()]
+        #check P2
+        for x in range(0,4):
+            if (self.getX()==(265 + x*200)) and (self.getY()>=260) and not(self.touchAlreadyP2[x]):
+                print("touching "+str(self.getX())+" "+ str(self.getY()))
+                self.touchAlreadyP2[x] = True
+                return [self.getX(),self.getY()]
+        if (self.getX()==(965)) and (self.getY()>=260) and not(self.touchAlreadyP2[4]):
+                print("touching "+str(self.getX())+" "+ str(self.getY()))
+                self.touchAlreadyP2[4] = True
+                return [self.getX(),self.getY()]
         
-        #checkP1
-        if (self.getX()>=40 and self.getX()<=1240) and (self.getY() >=60 and self.getY()<=260) and (self.getX() + deltaX >290) and not self.touchAlreadyP1[0]:
-            print("hit" + str(self.getX() + deltaX-25))
-            self.touchAlreadyP1[0] = True
-        for i in range(4):
-            if (self.getX()>=40 and self.getX()<=1240) and (self.getY() >=60 and self.getY()<=260) and (self.getX() + deltaX >340 + 200*i) and not self.touchAlreadyP1[i+1]:
-                print("hit" + str(self.getX() + deltaX-25))
-                self.touchAlreadyP1[i+1] = True
+        #check P3
+        if (self.getY()==(285)) and (self.getX()>=1040) and not(self.touchAlreadyP3[0]):
+                print("touching "+str(self.getX())+" "+ str(self.getY()))
+                self.touchAlreadyP3[0] = True
+                return [self.getX(),self.getY()]
+        if (self.getY()==(385)) and (self.getX()>=1040) and not(self.touchAlreadyP3[1]):
+                print("touching "+str(self.getX())+" "+ str(self.getY()))
+                self.touchAlreadyP3[1] = True
+                return [self.getX(),self.getY()]
+        #check P4
+        if (self.getY()==(285)) and (self.getX()<240) and not(self.touchAlreadyP4[0]):
+                print("touching "+str(self.getX())+" "+ str(self.getY()))
+                self.touchAlreadyP4[0] = True
+                return [self.getX(),self.getY()]
+        if (self.getY()==(385)) and (self.getX()<240) and not(self.touchAlreadyP4[1]):
+                print("touching "+str(self.getX())+" "+ str(self.getY()))
+                self.touchAlreadyP4[1] = True
+                return [self.getX(),self.getY()]
+    def checkDone(self):
+        for x in range(0,4):
+            if not(self.touchAlreadyP1[x]) or not(self.touchAlreadyP2[x]):
+                return False
+        for x in range(0,2):
+            if not(self.touchAlreadyP3[x]) or not(self.touchAlreadyP4[x]):
+                return False
+        return True
+            
+            
 
-        #checkP2
-        for i in range(4):
-            if (self.getX()>=40 and self.getX()<=1240) and (self.getY() >=460 and self.getY()<=660) and (self.getX() + deltaX <850 - 200*i) and not self.touchAlreadyP2[4-i]:
-                print("hit" + str(self.getX() + deltaX-25+100))
-                self.touchAlreadyP2[4-i] = True
-        if (self.getX()>=40 and self.getX()<=1240) and (self.getY() >=460 and self.getY()<=660) and (self.getX() + deltaX <190) and not self.touchAlreadyP2[0]:
-            print("hit" + str(self.getX() + deltaX-25+100))
-            self.touchAlreadyP1[0] = True
 
-        #checkP3
-        for i in range(4):
-            if (self.getX()>=1040 and self.getX()<=1240) and (self.getY() >=260 and self.getY()<=460) and (self.getY() + deltaY >310+i*100) and not self.touchAlreadyP3[i]:
-                print("hit" + str(self.getY() + deltaY-25))
-                self.touchAlreadyP3[i] = True
-        
-        #checkP3
-        for i in range(4):
-            if (self.getX()>=40 and self.getX()<=240) and (self.getY() >=260 and self.getY()<=460) and (self.getY() + deltaY <310+i*100) and not self.touchAlreadyP4[2-i]:
-                print("hit" + str(self.getY() + deltaY-25))
-                self.touchAlreadyP4[1-i] = True
+
+
         
 
     
