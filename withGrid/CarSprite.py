@@ -3,6 +3,7 @@ from pyglet.window import key
 from pyglet.window import FPSDisplay
 import math
 from Line import *
+import numpy as np
 WINDOWWIDTH=1280
 WINDOWHEIGHT=720 
 class CarSprite():
@@ -188,6 +189,7 @@ class CarSprite():
                 print("touching "+str(self.getX())+" "+ str(self.getY()))
                 self.touchAlreadyP4[1] = True
                 return [self.getX(),self.getY()]
+    
     def checkDone(self):
         for x in range(0,4):
             if not(self.touchAlreadyP1[x]) or not(self.touchAlreadyP2[x]):
@@ -196,6 +198,10 @@ class CarSprite():
             if not(self.touchAlreadyP3[x]) or not(self.touchAlreadyP4[x]):
                 return False
         return True
+    
+    def randomAction(self):
+        return np.random.randint(0,3)
+
             
             
 
