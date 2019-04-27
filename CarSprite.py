@@ -30,11 +30,11 @@ class CarSprite():
     def draw(self):
         #draw the car
         self.carSprite.draw()
-        Line(self.getX()-25,self.getY()-25,self.getX()+25,self.getY()-25,[0,0,0],1).draw()
-        Line(self.getX()-25,self.getY()+25,self.getX()+25,self.getY()+25,[0,0,0],1).draw()
+        Line(self.getX()-25,self.getY()-25,self.getX()+25,self.getY()-25,[0,0,1],1).draw()
+        Line(self.getX()-25,self.getY()+25,self.getX()+25,self.getY()+25,[0,0,1],1).draw()
 
-        Line(self.getX()-25,self.getY()-25,self.getX()-25,self.getY()+25,[0,0,0],1).draw()
-        Line(self.getX()+25,self.getY()-25,self.getX()+25,self.getY()+25,[0,0,0],1).draw()
+        Line(self.getX()-25,self.getY()-25,self.getX()-25,self.getY()+25,[0,0,1],1).draw()
+        Line(self.getX()+25,self.getY()-25,self.getX()+25,self.getY()+25,[0,0,1],1).draw()
         
 
         #draw the check point

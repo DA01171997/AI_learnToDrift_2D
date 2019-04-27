@@ -37,7 +37,7 @@ class AI():
         self.done=False
 
         
-        self.currentVariable={
+        self.environmentVariable={
         "learningRate":self.learningRate,
         "discountRate":self.discountRate,
         "exploreRate":self.exploreRate,
@@ -90,8 +90,8 @@ class AI():
     # return a random movement index
     def actionSample(self):
         return np.random.randint(0,self.actionNum)
-    def getCurrentVariable(self):
-        self.currentVariable={
+    def getEnvironment(self):
+        self.environmentVariable={
         "learningRate":self.learningRate,
         "discountRate":self.discountRate,
         "exploreRate":self.exploreRate,
@@ -105,7 +105,23 @@ class AI():
         "minExploreRate":self.minExploreRate,
         "maxEpisode":self.maxEpisode,
         "maxSteps":self.maxSteps}
-        return self.currentVariable
+        return self.environmentVariable 
+    def setEnvironment(self,environment):
+        self.environmentVariable=environment
+        self.learningRate = self.environmentVariable["learningRate"]
+        self.discountRate = self.environmentVariable["discountRate"]
+        self.exploreRate = self.environmentVariable["exploreRate"]
+        self.decayRate = self.environmentVariable["decayRate"]
+        self.currentState = self.environmentVariable["currentState"]
+        self.episodeCounter = self.environmentVariable["episodeCounter"]
+        self.exp_tradeoff = self.environmentVariable["exp_tradeoff"]
+        self.option = self.environmentVariable["option"]
+        self.done = self.environmentVariable["done"]
+        self.maxExploreRate = self.environmentVariable["maxExploreRate"]
+        self.minExploreRate = self.environmentVariable["minExploreRate"]
+        self.maxEpisode = self.environmentVariable["maxEpisode"]
+        self.maxSteps = self.environmentVariable["maxSteps"]
+
 
     #Training function
     #think of it as the loop that get run
@@ -159,10 +175,18 @@ class AI():
                 #save and the Qdata
                 if self.done == True:
                     self.stopFlag = True
+                    
+                    #save the Q table
+                    name ='auto-saveQtable' + str(self.completeCounter) +'.txt'
+                    window.saveFile(name,whatToSave=self.qTable,option="Q")
+
+                    #save the environment
+                    name = 'auto-saveEnvironment'
+                    name= name + str(self.completeCounter) +".npy"
+                    environment = self.getEnvironment()
+                    window.saveFile(name,whatToSave=environment,option="E")
+
                     self.completeCounter+=1
-                    self.saveFilename = 'auto-saveQtable'
-                    self.saveFilename = self.saveFilename + str(self.completeCounter) +".txt"
-                    window.saveFile(self.saveFilename)
                     if self.stepCounter < self.minStep:
                         self.minStep = self.stepCounter
     
