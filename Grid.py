@@ -4,6 +4,7 @@ from pyglet.window import FPSDisplay
 import math
 from Line import *
 
+#used to draw the grid
 class Grid():
     def __init__(self,x1,y1,width, height, gridSize):
         self.x1=x1

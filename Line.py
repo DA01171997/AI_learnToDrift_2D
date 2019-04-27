@@ -3,6 +3,9 @@ from pyglet.window import key
 from pyglet.window import FPSDisplay
 import math
 
+#simple class that
+#that make drawing line easier
+#color is a list of RGB values
 class Line():
     def __init__(self,x1,y1,x2,y2,color=None,z=None):
         self.x1=x1

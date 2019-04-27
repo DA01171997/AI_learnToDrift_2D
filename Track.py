@@ -3,6 +3,8 @@ from pyglet.window import key
 from pyglet.window import FPSDisplay
 import math
 from Line import *
+
+#Draw car tracks
 class Track():
     def __init__(self, outTrack, inTrack, color=None):
         self.outX=outTrack[0]
