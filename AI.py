@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import os
 class AI():
     def __init__(self):
         #hyperparameters
@@ -11,7 +12,7 @@ class AI():
         self.maxExploreRate = 1.0
         self.minExploreRate = 0.1
         self.decayRate= 0.01
-
+        self.exp_tradeoff=0.0
         #initialize Qtable
         #and create 2D to 1D mapping (and vice versa) dictionaries
         self.actionNum = 4
@@ -32,6 +33,24 @@ class AI():
         self.done = False
         self.stopFlag = False
         self.completeCounter=0
+        self.option=""
+        self.done=False
+
+        
+        self.currentVariable={
+        "learningRate":self.learningRate,
+        "discountRate":self.discountRate,
+        "exploreRate":self.exploreRate,
+        "decayRate":self.decayRate,
+        "currentState":self.currentState,
+        "episodeCounter":self.episodeCounter,
+        "exp_tradeoff":self.exp_tradeoff,
+        "option":self.option,
+        "done":self.done, 
+        "maxExploreRate":self.maxExploreRate, 
+        "minExploreRate":self.minExploreRate,
+        "maxEpisode":self.maxEpisode,
+        "maxSteps":self.maxSteps}
 
         #play variables
         self.playEpisodeCounter =0
@@ -71,7 +90,23 @@ class AI():
     # return a random movement index
     def actionSample(self):
         return np.random.randint(0,self.actionNum)
-    
+    def getCurrentVariable(self):
+        self.currentVariable={
+        "learningRate":self.learningRate,
+        "discountRate":self.discountRate,
+        "exploreRate":self.exploreRate,
+        "decayRate":self.decayRate,
+        "currentState":self.currentState,
+        "episodeCounter":self.episodeCounter,
+        "exp_tradeoff":self.exp_tradeoff,
+        "option":self.option,
+        "done":self.done, 
+        "maxExploreRate":self.maxExploreRate, 
+        "minExploreRate":self.minExploreRate,
+        "maxEpisode":self.maxEpisode,
+        "maxSteps":self.maxSteps}
+        return self.currentVariable
+
     #Training function
     #think of it as the loop that get run
     #ever frame.
@@ -86,10 +121,10 @@ class AI():
                 #trade off to explore or exploit
                 self.exp_tradeoff = random.uniform(0,1)
                 if self.exp_tradeoff > self.exploreRate:
-                    option="choose"
+                    self.option="choose"
                     action = np.argmax(self.qTable[self.currentState,:])
                 else:
-                    option="random"
+                    self.option="random"
                     action = self.actionSample()
 
                 #keep track the last 4 state and actions
@@ -125,15 +160,13 @@ class AI():
                 if self.done == True:
                     self.stopFlag = True
                     self.completeCounter+=1
-                    self.saveFilename = 'auto-save'
+                    self.saveFilename = 'auto-saveQtable'
                     self.saveFilename = self.saveFilename + str(self.completeCounter) +".txt"
-                    np.savetxt(self.saveFilename, self.qTable, fmt='%f')
+                    window.saveFile(self.saveFilename)
                     if self.stepCounter < self.minStep:
                         self.minStep = self.stepCounter
-                    print("saved")
     
-
-                print([self.currentState,newState,action,reward,self.done,option,self.exp_tradeoff,self.exploreRate, repeating])
+                print([self.currentState,newState,action,reward,self.done,self.option,self.exp_tradeoff,self.exploreRate, repeating])
                 
                 #increment counter for the  inner loop
                 #reseting the index for that used

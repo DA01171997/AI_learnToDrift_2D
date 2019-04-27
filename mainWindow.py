@@ -10,9 +10,9 @@ import numpy as np
 import random
 from AI import *
 import sys
+import os
 WINDOWWIDTH=1280
 WINDOWHEIGHT=720
-
 
 class MyWindow(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
@@ -28,7 +28,7 @@ class MyWindow(pyglet.window.Window):
         self.ai = AI()
         self.train = False
         self.play = False
-
+        self.manualSaveCounter=0
         #printing variable
         self.episodeCounter = 0
         self.stepCounter = 0
@@ -57,10 +57,10 @@ class MyWindow(pyglet.window.Window):
                 color=(0, 0, 255, 255))
         self.bottomLabel.draw()
 
-        self.topLabel = pyglet.text.Label((thisIterationNameIs+":  Episode = " + str(self.episodeCounter)+ " , Step = " + str(self.stepCounter)+ " , Complete = " + str(self.completeC)),
+        self.topLabel = pyglet.text.Label((str(self.ai.getCurrentVariable())),
                 font_name='Times New Roman',                      
-                font_size=15,
-                x= 400, y=690,
+                font_size=9,
+                x= 1, y=690,
                 color=(0, 0, 255, 255))
         self.topLabel.draw()
         
@@ -80,9 +80,10 @@ class MyWindow(pyglet.window.Window):
 
         #for user to manually save current Q table
         elif symbol == key.SPACE:
-            name = 'manualSave.txt'
-            np.savetxt(name, self.ai.qTable, fmt='%f')
-            print("Manually Save")
+            name ='manualSaveQTable' + str(self.manualSaveCounter) +'.txt'
+            self.saveFile(name)
+            self.manualSaveCounter+=1
+            
         #enter to train
         elif symbol == key.ENTER:
             self.train = True
@@ -94,10 +95,14 @@ class MyWindow(pyglet.window.Window):
         
         #load and then train manually
         elif symbol == key._1:
-            name = "namehere"
-            tempA = np.loadtxt(name, dtype =float)
-            self.ai.qTable = tempA
-            print(self.ai.qTable)
+            name = "fileNameHere"
+            loadedQtable = self.loadFile(name)
+            if loadedQtable != None:
+                self.ai.qTable =loadedQtable
+                print(self.ai.qTable)
+                self.ai.play(self,self.car)
+            else:
+                print("Error loading: "+name)
     
     #reset car environment
     def resetCar(self):
@@ -115,17 +120,37 @@ class MyWindow(pyglet.window.Window):
         #play if backspace is pressed
         #or the qtable text file is given as parameters
         if self.play or len(sys.argv)>1:
-            name = str(sys.argv[1]) + ".txt"
-            tempA = np.loadtxt(name, dtype =float)
-            self.ai.qTable = tempA
-            self.ai.play(self,self.car)
+            name = str(sys.argv[1])
+            loadedQtable = self.loadFile(name)
+            if loadedQtable != None:
+                self.ai.qTable =loadedQtable
+                print(self.ai.qTable)
+                self.ai.play(self,self.car)
+            else:
+                print("Error loading: "+name)
         
     #update called to update value we print on screen
     def updateES(self,episode,step,complete):
         self.episodeCounter = episode
         self.stepCounter = step
         self.completeC = complete
-        
+
+    #supporting function
+    def createDirectory(self,directoryName):
+        if not os.path.exists(directoryName):
+            os.makedirs(directoryName)
+    def loadFile(self,fileName):
+        if os.path.isfile(fileName):
+            tempA = np.loadtxt(fileName, dtype =float)
+            return tempA
+        else:
+            return None
+    def saveFile(self,name, directory = "./saveData/"):
+        self.createDirectory(directory)
+        name = directory+name
+        np.savetxt(name, self.ai.qTable, fmt='%f')
+        print("Save: " + name)
+
 #start window
 if __name__ == "__main__":
     window = MyWindow(WINDOWWIDTH,WINDOWHEIGHT, "DRIFT AI", resizable=True, vsync =True)
