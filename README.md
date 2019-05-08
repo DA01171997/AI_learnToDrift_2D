@@ -34,8 +34,12 @@ be present..
 
 To test the project, run the following commands in a Linux terminal to download the required libraries..
 
-   > pip install --user pyglet
-   > pip install --user numpy
+   > pip install --user pyglet  
+   > pip install --user numpy  
+
+Head to  https://avbin.github.io/AVbin/Download.html and download AVbin10 for Linux and run the following command in your terminal to install it.
+
+   > sudo sh ./install-avbin-linux-x86-64-v10  
 
 If you do not have Python 3 installed on your terminal, run the following command to do so..
 
