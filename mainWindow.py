@@ -234,5 +234,7 @@ class MyWindow(pyglet.window.Window):
 if __name__ == "__main__":
     window = MyWindow(WINDOWWIDTH,WINDOWHEIGHT, "DRIFT AI", resizable=True, vsync =True)
     window.push_handlers(window.key_handler)
+    music = pyglet.resource.media('deja-vu.mp3')    
     pyglet.clock.schedule_interval(window.update,1/100.0)
+    music.play()
     pyglet.app.run()
