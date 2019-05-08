@@ -1,10 +1,10 @@
 # AI_learnToDrift_2D
 
-Team 10 Members:
-Gordon Huynh
-Jimmy Xuan
-Eric Le
-Duy Do
+Team 10 Members:  
+Gordon Huynh  
+Jimmy Xuan  
+Eric Le  
+Duy Do  
 
 
 # Description
